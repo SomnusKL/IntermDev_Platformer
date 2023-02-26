@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngineInternal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,13 +18,15 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D player;
     private bool isTouchingGround;
 
-    
+    //Animation
+    private Animator playerAnimation;
     
     
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
+        playerAnimation = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -32,6 +35,7 @@ public class PlayerController : MonoBehaviour
         isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         //check if the drawn circle is overlapped with the groundLayer
         direction = Input.GetAxis("Horizontal");
+        
         //right direction
         if (direction > 0f)
         {
@@ -52,5 +56,9 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
         }
+        
+        //talk to the animator
+        playerAnimation.SetFloat("Speed",Mathf.Abs(player.velocity.x));
+        playerAnimation.SetBool("OnGround", isTouchingGround);
     }
 }
