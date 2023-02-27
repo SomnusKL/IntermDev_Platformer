@@ -40,10 +40,12 @@ public class PlayerController : MonoBehaviour
         if (direction > 0f)
         {
             player.velocity = new Vector2(direction*speed, player.velocity.y);
+            transform.localScale = new Vector2(0.25f,0.25f);
         }
         //left direction
         else if (direction < 0f)
         {
+            transform.localScale = new Vector2(-0.25f,0.25f);
             player.velocity = new Vector2(direction*speed, player.velocity.y);
         }
         //still
