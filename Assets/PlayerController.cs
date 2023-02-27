@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngineInternal;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("Jump") && isTouchingGround)
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+            Debug.Log("jump");
         }
         
         //talk to the animator
@@ -81,6 +83,19 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = respawnPoint;
             screenshake = true;
+        }
+        else if (collision.CompareTag("NextLevel"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            respawnPoint = transform.position;
+        }
+        else if (collision.CompareTag("PreviousLevel"))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            respawnPoint = transform.position;
+        }
+        else if (collision.CompareTag("Ob")){
+            SceneManager.LoadScene("Lose");
         }
     }
 }

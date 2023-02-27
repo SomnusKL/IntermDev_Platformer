@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Fall
+  - NextLevel
+  - PreviousLevel
+  - Ob
   layers:
   - Default
   - TransparentFX
