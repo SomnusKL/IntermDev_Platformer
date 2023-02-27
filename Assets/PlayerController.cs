@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,12 +22,19 @@ public class PlayerController : MonoBehaviour
     //Animation
     private Animator playerAnimation;
     
+    //reset player location
+    private Vector3 respawnPoint;
+    public GameObject Detector;
+    
+    //screenshake
+    public bool screenshake = false;
     
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         playerAnimation = GetComponent<Animator>();
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -62,5 +70,17 @@ public class PlayerController : MonoBehaviour
         //talk to the animator
         playerAnimation.SetFloat("Speed",Mathf.Abs(player.velocity.x));
         playerAnimation.SetBool("OnGround", isTouchingGround);
+        
+        //detector follow player
+        Detector.transform.position = new Vector2(transform.position.x, Detector.transform.position.y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Fall"))
+        {
+            transform.position = respawnPoint;
+            screenshake = true;
+        }
     }
 }
