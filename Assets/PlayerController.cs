@@ -19,8 +19,8 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
     private Rigidbody2D player;
     private bool isTouchingGround;
-    private int doublejump = 0;
 
+    private bool canDoubleJump = false;
     //Animation
     private Animator playerAnimation;
     
@@ -64,11 +64,20 @@ public class PlayerController : MonoBehaviour
             player.velocity = new Vector2(0, player.velocity.y);
         }
         //jump
-        if (Input.GetButton("Jump") && isTouchingGround)
+        if (Input.GetButtonDown("Jump"))
         {
-            player.velocity = new Vector2(player.velocity.x, jumpSpeed);
-            Debug.Log("jump");
-            doublejump++;
+            if (isTouchingGround)
+            {
+                player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                canDoubleJump = true; // set canDoubleJump to true after the first jump
+                Debug.Log("jump");
+            }
+            else if (canDoubleJump) // check if the player can double jump
+            {
+                player.velocity = new Vector2(player.velocity.x, jumpSpeed);
+                canDoubleJump = false; // reset the double jump ability
+                Debug.Log("double jump");
+            }
         }
         
         //talk to the animator
