@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
     private Rigidbody2D player;
     private bool isTouchingGround;
+    private int doublejump = 0;
 
     //Animation
     private Animator playerAnimation;
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             player.velocity = new Vector2(player.velocity.x, jumpSpeed);
             Debug.Log("jump");
+            doublejump++;
         }
         
         //talk to the animator
