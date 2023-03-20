@@ -130,6 +130,10 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
             respawnPoint = transform.position;
         }
+        else if (collision.CompareTag("End"))
+        {
+            SceneManager.LoadScene("End");
+        }
         else if (collision.CompareTag("Ob")){
             SceneManager.LoadScene("Lose");
         }
