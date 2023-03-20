@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private float direction = 0f;
     private Rigidbody2D player;
     private bool isTouchingGround;
+    private bool isOnLadder;
 
     private bool canDoubleJump = false;
     //Animation
@@ -30,6 +31,10 @@ public class PlayerController : MonoBehaviour
     
     //screenshake
     public bool screenshake = false;
+    
+    public Transform ladderCheck;
+    public LayerMask ladderLayer;
+    public float ladderCheckRadius = 5f;
     
     // Start is called before the first frame update
     void Start()
@@ -44,7 +49,27 @@ public class PlayerController : MonoBehaviour
     {
         isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         //check if the drawn circle is overlapped with the groundLayer
+        isOnLadder = Physics2D.OverlapCircle(ladderCheck.position, groundCheckRadius, ladderLayer);
+
         direction = Input.GetAxis("Horizontal");
+        
+        if (isOnLadder)
+        {
+            float verticalDirection = Input.GetAxis("Vertical");
+
+            if (verticalDirection != 0)
+            {
+                player.velocity = new Vector2(player.velocity.x, verticalDirection * speed);
+            }
+            else
+            {
+                player.velocity = new Vector2(player.velocity.x, 0);
+            }
+        }
+        else
+        {
+            direction = Input.GetAxis("Horizontal");
+        }
         
         //right direction
         if (direction > 0f)
