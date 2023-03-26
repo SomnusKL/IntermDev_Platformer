@@ -134,6 +134,10 @@ public class PlayerController : MonoBehaviour
         {
             SceneManager.LoadScene("End");
         }
+        else if (collision.CompareTag("Level1"))
+        {
+            SceneManager.LoadScene("Level1");
+        }
         else if (collision.CompareTag("Ob")){
             SceneManager.LoadScene("Lose");
         }

@@ -9,6 +9,7 @@ TagManager:
   - PreviousLevel
   - Ob
   - End
+  - Level1
   layers:
   - Default
   - TransparentFX
