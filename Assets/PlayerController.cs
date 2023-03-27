@@ -36,6 +36,15 @@ public class PlayerController : MonoBehaviour
     public LayerMask ladderLayer;
     public float ladderCheckRadius = 5f;
     
+    //dashing
+    private bool canDash = true;
+    private bool isDashing;
+    public float dashingPower = 10f;
+    public float dashingTime = 0.2f;
+    public float dashingCoolDown = 1f;
+    [SerializeField] private TrailRenderer tr;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +56,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
+        
         isTouchingGround = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         //check if the drawn circle is overlapped with the groundLayer
         isOnLadder = Physics2D.OverlapCircle(ladderCheck.position, groundCheckRadius, ladderLayer);
@@ -104,6 +118,11 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("double jump");
             }
         }
+        //dash
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
         
         //talk to the animator
         playerAnimation.SetFloat("Speed",Mathf.Abs(player.velocity.x));
@@ -111,6 +130,14 @@ public class PlayerController : MonoBehaviour
         
         //detector follow player
         Detector.transform.position = new Vector2(transform.position.x, Detector.transform.position.y);
+    }
+
+    private void FixedUpdate()
+    {
+        if (isDashing)
+        {
+            return;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -139,7 +166,21 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("Level1");
         }
         else if (collision.CompareTag("Ob")){
+            PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
             SceneManager.LoadScene("Lose");
         }
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        player.velocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCoolDown);
+        canDash = true;
     }
 }

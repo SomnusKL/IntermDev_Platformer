@@ -7,11 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class Die : MonoBehaviour
 {
-   
+    private Scene previousScene;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -20,7 +19,8 @@ public class Die : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             // Code to execute when space is pressed
             Debug.Log("Space key was pressed");
-            SceneManager.LoadScene("Level2");
+            string previousScene = PlayerPrefs.GetString("PreviousScene");
+            SceneManager.LoadScene(previousScene);
         }
     }
 }
